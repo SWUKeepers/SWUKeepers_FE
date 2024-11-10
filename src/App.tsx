@@ -3,6 +3,7 @@ import './App.css';
 import Root from './pages/Root';
 import { useToastStore } from './states/useToastStore';
 import ToastAlert from './components/ToastAlert';
+import SignIn from './pages/SignIn';
 
 function App() {
   const { toastProps, closeToast } = useToastStore();
@@ -17,6 +18,7 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<Root />} />
+        <Route path='/sign-in' element={<SignIn />} />
       </Routes>
     </Router>
   );
