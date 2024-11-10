@@ -1,25 +1,25 @@
 import { Button, Stack, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-interface ISignInForm {
+interface ISignUpForm {
   email: string;
   password: string;
 }
 
-const SignIn = () => {
+const SignUp = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ISignInForm>({
+  } = useForm<ISignUpForm>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data: ISignInForm) => {
+  const onSubmit = (data: ISignUpForm) => {
     console.log(data);
     reset();
   };
@@ -54,4 +54,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
