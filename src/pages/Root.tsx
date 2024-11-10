@@ -9,6 +9,12 @@ const Root = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!file) {
+      alert('파일을 선택해주세요.');
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append('file', file as File);
@@ -25,10 +31,13 @@ const Root = () => {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
+    if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
+    } else {
+      setFile(null); // 파일이 선택되지 않은 경우
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <input
