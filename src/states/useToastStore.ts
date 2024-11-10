@@ -8,7 +8,10 @@ interface IToastProps {
 
 interface IToastStore {
   toastProps: IToastProps;
-  openToast: (toast: IToastProps) => void;
+  openToast: (toast: {
+    severity: 'info' | 'error' | 'warning' | 'success';
+    message: string;
+  }) => void;
   closeToast: () => void;
 }
 

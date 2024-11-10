@@ -9,13 +9,13 @@ function App() {
 
   return (
     <Router>
+      <ToastAlert
+        severity={toastProps.severity}
+        open={toastProps.open}
+        message={toastProps.message}
+        closeToast={closeToast}
+      />
       <Routes>
-        <ToastAlert
-          severity={toastProps.severity}
-          open={toastProps.open}
-          message={toastProps.message}
-          closeToast={closeToast}
-        />
         <Route path='/' element={<Root />} />
       </Routes>
     </Router>
