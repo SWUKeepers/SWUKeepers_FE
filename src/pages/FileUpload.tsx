@@ -1,8 +1,9 @@
 import { useToastStore } from '@/states/useToastStore';
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined';
+import Layout from '@/layouts/Layout';
 
 const FileUpload = () => {
   const [file, setFile] = useState<null | File>(null);
@@ -41,7 +42,7 @@ const FileUpload = () => {
   };
 
   return (
-    <Container maxWidth='md'>
+    <Layout>
       <Stack
         component={'form'}
         onSubmit={handleSubmit}
@@ -101,7 +102,7 @@ const FileUpload = () => {
           전송하기
         </Button>
       </Stack>
-    </Container>
+    </Layout>
   );
 };
 
