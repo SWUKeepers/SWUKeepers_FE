@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import Root from './pages/Root';
+import FileUpload from './pages/FileUpload';
 import { useToastStore } from './states/useToastStore';
 import ToastAlert from './components/ToastAlert';
 import SignUp from './pages/SignUp';
@@ -17,7 +17,7 @@ function App() {
         closeToast={closeToast}
       />
       <Routes>
-        <Route path='/' element={<Root />} />
+        <Route path='/' element={<FileUpload />} />
         <Route path='/sign-up' element={<SignUp />} />
       </Routes>
     </Router>
