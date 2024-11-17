@@ -4,7 +4,7 @@ import FileUpload from './pages/FileUpload';
 import { useToastStore } from './states/useToastStore';
 import ToastAlert from './components/ToastAlert';
 import SignUp from './pages/SignUp';
-import Result from './pages/Result';
+import Result from './pages/result/Result';
 
 function App() {
   const { toastProps, closeToast } = useToastStore();
