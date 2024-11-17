@@ -12,13 +12,14 @@ const Chatroom = ({
   return (
     <Stack
       direction={'column'}
-      spacing={1}
+      spacing={2}
       sx={{
         width: '100%',
         height: '100%',
         overflowY: 'auto',
         padding: '1rem',
-        backgroundColor: isBulling ? '#f8f8f8' : 'lightgray',
+        backgroundColor: isBulling ? 'error.light' : 'lightgray',
+        boxSizing: 'border-box',
       }}
     >
       {messageData.map((message) => (
