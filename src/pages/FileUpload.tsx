@@ -23,8 +23,8 @@ const FileUpload = () => {
     formData.append('file', file as File);
 
     axios
-      .post('http://localhost:8000/api/upload/', formData)
-      .then((response) => {
+      .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData)
+      .then(() => {
         openToast({ severity: 'success', message: '파일 업로드 성공' });
       })
       .catch((error) => {
