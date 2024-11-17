@@ -1,6 +1,8 @@
 import Layout from '@/layouts/Layout';
+import { IChatroom } from '@/types/IChatroom';
+import Chatroom from './panel/Chatroom';
 
-const mockData = {
+const mockData: IChatroom = {
   isBulling: false,
   messageData: [
     { id: 1, message: '안녕! 잘 지내?', sender: '나' },
@@ -36,7 +38,7 @@ const mockData = {
 const Result = () => {
   return (
     <Layout>
-      <div>Result</div>
+      <Chatroom {...mockData} />
     </Layout>
   );
 };

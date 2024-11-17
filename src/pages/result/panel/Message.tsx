@@ -1,9 +1,5 @@
+import { IMessageProps } from '@/types/IChatroom';
 import { Stack, SxProps, Typography } from '@mui/material';
-
-interface IMessageProps {
-  message: string;
-  sender: string;
-}
 
 // 나
 const senderStyle: SxProps = {
