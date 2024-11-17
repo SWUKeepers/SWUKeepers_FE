@@ -1,4 +1,4 @@
-import { Box, Stack, SxProps } from '@mui/material';
+import { Stack, SxProps, Typography } from '@mui/material';
 
 interface IMessageProps {
   message: string;
@@ -26,17 +26,25 @@ const receiverStyle: SxProps = {
 const Message = ({ message, sender }: IMessageProps) => {
   return (
     <Stack
-      direction={'row'}
-      justifyContent={sender === '나' ? 'flex-end' : 'flex-start'}
+      direction={'column'}
+      alignItems={sender === '나' ? 'flex-end' : 'flex-start'}
       spacing={1}
       sx={{ width: '100%' }}
     >
-      <Box
+      <Typography
+        variant={'body1'}
+        sx={{
+          px: 0.5,
+        }}
+      >
+        {sender}
+      </Typography>
+      <Typography
+        variant='body1'
         sx={sender === '나' ? senderStyle : receiverStyle}
-        component={'span'}
       >
         {message}
-      </Box>
+      </Typography>
     </Stack>
   );
 };

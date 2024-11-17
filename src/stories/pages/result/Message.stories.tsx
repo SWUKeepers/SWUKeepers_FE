@@ -7,7 +7,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   parameters: {
     backgrounds: {
-      default: 'dark',
+      default: 'light',
     },
   },
 };
