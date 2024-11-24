@@ -98,6 +98,7 @@ const FileUpload = () => {
             width: '10rem',
             height: '3rem',
           }}
+          disabled={!file}
         >
           전송하기
         </Button>
