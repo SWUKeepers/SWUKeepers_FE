@@ -19,39 +19,39 @@ const FileUpload = () => {
     }
 
     const formData = new FormData();
-
     formData.append('file', file as File);
 
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData)
+      .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData, {
+        responseType: 'arraybuffer', // PDF 데이터를 바이너리로 처리
+      })
       .then((response) => {
-        const blob = new Blob([response.data], {
-          type: response.headers['content-type'],
-        });
+        const blob = new Blob([response.data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const contentDisposition = response.headers['content-disposition'];
-        let fileName = 'download.pdf'; // 기본값
+        let fileName = 'download.pdf'; // 기본 파일명
 
         if (contentDisposition) {
-          const match = contentDisposition.match(/filename="(.+)"/);
+          const match = contentDisposition.match(/filename\*=UTF-8''(.+)/);
           if (match && match[1]) {
-            fileName = match[1];
+            fileName = decodeURIComponent(match[1]); // UTF-8 디코딩
           }
         }
 
-        // 파일 다운로드 트리거ㄴ
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
         link.remove();
+
+        window.URL.revokeObjectURL(url); // Blob URL 해제
         console.log('Blob size:', blob.size);
         openToast({ severity: 'success', message: '파일 업로드 성공' });
       })
       .catch((error) => {
-        console.error(error);
-        openToast({ severity: 'error', message: error.response.data.detail });
+        console.error('파일 다운로드 실패:', error);
+        openToast({ severity: 'error', message: '파일 다운로드 실패' });
       });
   };
 
@@ -59,7 +59,7 @@ const FileUpload = () => {
     if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
     } else {
-      setFile(null); // 파일이 선택되지 않은 경우
+      setFile(null); // 파일 선택 취소
     }
   };
 
