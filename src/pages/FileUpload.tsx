@@ -24,7 +24,29 @@ const FileUpload = () => {
 
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData)
-      .then(() => {
+      .then((response) => {
+        const blob = new Blob([response.data], {
+          type: response.headers['content-type'],
+        });
+        const url = window.URL.createObjectURL(blob);
+        const contentDisposition = response.headers['content-disposition'];
+        let fileName = 'download.pdf'; // 기본값
+
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="(.+)"/);
+          if (match && match[1]) {
+            fileName = match[1];
+          }
+        }
+
+        // 파일 다운로드 트리거ㄴ
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        console.log('Blob size:', blob.size);
         openToast({ severity: 'success', message: '파일 업로드 성공' });
       })
       .catch((error) => {
