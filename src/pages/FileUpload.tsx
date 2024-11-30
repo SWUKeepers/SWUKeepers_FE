@@ -6,6 +6,8 @@ import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUpload
 import Layout from '@/layouts/Layout';
 import Loading from '@/components/Loading';
 import { extractErrorMessageFromString } from '@/utils/errorMessageParser';
+import { IChatroom } from '@/types/IChatroom';
+import { parseKakaoChatFile } from '@/utils/kakaoTalkParser';
 
 const FileUpload = () => {
   const [file, setFile] = useState<null | File>(null);
@@ -13,10 +15,11 @@ const FileUpload = () => {
   const [data, setData] = useState<{ url: string; filename: string } | null>(
     null
   );
+  const [chatroom, setChatroom] = useState<IChatroom | null>(null);
 
   const { openToast } = useToastStore();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setIsLoading(true);
@@ -34,7 +37,10 @@ const FileUpload = () => {
       return decoder.decode(arrayBuffer); // ArrayBuffer를 문자열로 변환
     }
 
-    axios
+    const parsedChat = await parseKakaoChatFile(file);
+    setChatroom(parsedChat);
+
+    await axios
       .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData, {
         responseType: 'arraybuffer', // PDF 데이터를 바이너리로 처리
       })
@@ -50,20 +56,29 @@ const FileUpload = () => {
             fileName = decodeURIComponent(match[1]); // UTF-8 디코딩
           }
         }
+        setData({ url, filename: fileName });
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', fileName);
+        // document.body.appendChild(link);
+        // link.click();
+        // link.remove();
 
-        window.URL.revokeObjectURL(url); // Blob URL 해제
-        console.log('Blob size:', blob.size);
+        // window.URL.revokeObjectURL(url); // Blob URL 해제
+        // console.log('Blob size:', blob.size);
         setIsLoading(false);
+        setChatroom({ ...parsedChat, isBulling: true });
         openToast({ severity: 'success', message: '파일 업로드 성공' });
       })
       .catch((error) => {
+        if (error.response.status === 403) {
+          openToast({
+            severity: 'success',
+            message: '파일 업로드 성공',
+          });
+        }
+
         setIsLoading(false);
 
         const errorString = arrayBufferToString(error.response.data);
@@ -92,7 +107,7 @@ const FileUpload = () => {
         spacing={3}
         alignItems={'center'}
       >
-        <Stack alignItems={'center'}>
+        <Stack alignItems={'center'} spacing={1}>
           <Typography variant='h4'>파일 업로드</Typography>
           <Typography variant='subtitle1'>
             텍스트 파일(.txt)을 업로드하여 사이버불링 여부를 진단받으세요.
