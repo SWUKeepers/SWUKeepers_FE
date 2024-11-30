@@ -1,3 +1,4 @@
 src/**/*.stories.tsx
 src/**/*.stories.ts
 .storybook/**
+public/할 일.png

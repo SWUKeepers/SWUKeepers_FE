@@ -3,8 +3,6 @@ import './App.css';
 import FileUpload from './pages/FileUpload';
 import { useToastStore } from './states/useToastStore';
 import ToastAlert from './components/ToastAlert';
-import SignUp from './pages/SignUp';
-import Result from './pages/result/Result';
 
 function App() {
   const { toastProps, closeToast } = useToastStore();
@@ -18,10 +16,7 @@ function App() {
         closeToast={closeToast}
       />
       <Routes>
-        <Route path='/file-upload' element={<FileUpload />} />
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/' element={<div>Home</div>} />
-        <Route path='/result' element={<Result />} />
+        <Route path='/' element={<FileUpload />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
     </Router>
@@ -29,4 +24,3 @@ function App() {
 }
 
 export default App;
-
