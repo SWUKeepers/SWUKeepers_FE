@@ -2,7 +2,12 @@ import { AppBar, Container, Typography } from '@mui/material';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
+    <Container
+      sx={{
+        minHeight: '100vh',
+        padding: '0 !important',
+      }}
+    >
       <AppBar
         position='static'
         sx={{
@@ -26,7 +31,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         {children}
       </Container>
-    </>
+    </Container>
   );
 };
 

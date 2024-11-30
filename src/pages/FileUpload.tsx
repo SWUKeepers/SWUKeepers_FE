@@ -7,6 +7,7 @@ import Layout from '@/layouts/Layout';
 
 const FileUpload = () => {
   const [file, setFile] = useState<null | File>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { openToast } = useToastStore();
 
@@ -62,6 +63,9 @@ const FileUpload = () => {
       setFile(null); // 파일 선택 취소
     }
   };
+
+  if (isLoading) {
+  }
 
   return (
     <Layout>
