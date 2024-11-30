@@ -2,19 +2,12 @@ import Layout from '@/layouts/Layout';
 import Chatroom from './panel/Chatroom';
 import { useChatRoomStore } from '@/states/useChatRoomStore';
 import { usePDFDataStore } from '@/states/usePDFDataStore';
-import { Button } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 const Result = () => {
   const { chatroom, setChatroom } = useChatRoomStore();
   const { pdfData, setPDFData } = usePDFDataStore();
-
-  useEffect(() => {
-    return () => {
-      setChatroom(null);
-      setPDFData(null);
-    };
-  }, []);
 
   const handleDownload = () => {
     if (!pdfData) {
@@ -35,11 +28,23 @@ const Result = () => {
   }
   return (
     <Layout>
+      <Stack
+        direction='row'
+        spacing={2}
+        sx={{ marginBottom: 2 }}
+        justifyContent={'space-between'}
+      >
+        <Stack>
+          <Typography variant='h4'>분석 결과</Typography>
+          <Typography variant='h6'>
+            {chatroom.isBulling ? '사이버불링 감지됨' : '사이버불링 아님'}
+          </Typography>
+        </Stack>
+        <Button variant='contained' onClick={handleDownload}>
+          PDF 다운로드
+        </Button>
+      </Stack>
       <Chatroom {...chatroom} />
-
-      <Button onClick={handleDownload} variant='contained'>
-        PDF 다운로드
-      </Button>
     </Layout>
   );
 };
