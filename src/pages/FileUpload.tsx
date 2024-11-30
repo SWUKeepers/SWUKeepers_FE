@@ -1,23 +1,26 @@
 import { useToastStore } from '@/states/useToastStore';
 import { Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined';
 import Layout from '@/layouts/Layout';
 import Loading from '@/components/Loading';
 import { extractErrorMessageFromString } from '@/utils/errorMessageParser';
-import { IChatroom } from '@/types/IChatroom';
 import { parseKakaoChatFile } from '@/utils/kakaoTalkParser';
+import { useChatRoomStore } from '@/states/useChatRoomStore';
+import { usePDFDataStore } from '@/states/usePDFDataStore';
+import { useNavigate } from 'react-router-dom';
 
 const FileUpload = () => {
   const [file, setFile] = useState<null | File>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<{ url: string; filename: string } | null>(
-    null
-  );
-  const [chatroom, setChatroom] = useState<IChatroom | null>(null);
+
+  const { chatroom, setChatroom } = useChatRoomStore();
+  const { setPDFData } = usePDFDataStore();
 
   const { openToast } = useToastStore();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,20 +59,12 @@ const FileUpload = () => {
             fileName = decodeURIComponent(match[1]); // UTF-8 디코딩
           }
         }
-        setData({ url, filename: fileName });
+        setPDFData({ url, filename: fileName });
 
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', fileName);
-        // document.body.appendChild(link);
-        // link.click();
-        // link.remove();
-
-        // window.URL.revokeObjectURL(url); // Blob URL 해제
-        // console.log('Blob size:', blob.size);
         setIsLoading(false);
         setChatroom({ ...parsedChat, isBulling: true });
         openToast({ severity: 'success', message: '파일 업로드 성공' });
+        navigate('/result');
       })
       .catch((error) => {
         if (error.response.status === 403) {
@@ -77,6 +72,8 @@ const FileUpload = () => {
             severity: 'success',
             message: '파일 업로드 성공',
           });
+          console.log(chatroom);
+          navigate('/result');
         }
 
         setIsLoading(false);

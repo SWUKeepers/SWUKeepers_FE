@@ -3,6 +3,7 @@ import './App.css';
 import FileUpload from './pages/FileUpload';
 import { useToastStore } from './states/useToastStore';
 import ToastAlert from './components/ToastAlert';
+import Result from './pages/result/Result';
 
 function App() {
   const { toastProps, closeToast } = useToastStore();
@@ -17,6 +18,7 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<FileUpload />} />
+        <Route path='/result' element={<Result />} />
         <Route path='*' element={<div>Not Found</div>} />
       </Routes>
     </Router>
