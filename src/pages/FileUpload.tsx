@@ -16,11 +16,20 @@ const FileUpload = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { chatroom, setChatroom } = useChatRoomStore();
-  const { setPDFData } = usePDFDataStore();
+  const { pdfData, setPDFData } = usePDFDataStore();
 
   const { openToast } = useToastStore();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (chatroom) {
+      setChatroom(null);
+    }
+    if (pdfData) {
+      setPDFData(null);
+    }
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

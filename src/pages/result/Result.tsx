@@ -40,7 +40,11 @@ const Result = () => {
             {chatroom.isBulling ? '사이버불링 감지됨' : '사이버불링 아님'}
           </Typography>
         </Stack>
-        <Button variant='contained' onClick={handleDownload}>
+        <Button
+          variant='contained'
+          onClick={handleDownload}
+          disabled={!!pdfData}
+        >
           PDF 다운로드
         </Button>
       </Stack>
