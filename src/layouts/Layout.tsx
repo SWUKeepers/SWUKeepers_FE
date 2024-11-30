@@ -13,13 +13,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         sx={{
           backgroundColor: '#fff',
           p: '0.5rem',
-          mb: '1rem',
+          mb: '1.5rem',
         }}
       >
-        <Typography
-          variant='h6'
-          sx={{ color: 'primary.main', fontStyle: 'italic' }}
-        >
+        <Typography variant='h6' sx={{ color: '#000', fontStyle: 'italic' }}>
           SWUKeepers
         </Typography>
       </AppBar>

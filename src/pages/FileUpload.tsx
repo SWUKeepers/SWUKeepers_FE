@@ -4,15 +4,22 @@ import axios from 'axios';
 import { useState } from 'react';
 import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined';
 import Layout from '@/layouts/Layout';
+import Loading from '@/components/Loading';
+import { extractErrorMessageFromString } from '@/utils/errorMessageParser';
 
 const FileUpload = () => {
   const [file, setFile] = useState<null | File>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [data, setData] = useState<{ url: string; filename: string } | null>(
+    null
+  );
 
   const { openToast } = useToastStore();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setIsLoading(true);
 
     if (!file) {
       alert('파일을 선택해주세요.');
@@ -21,6 +28,11 @@ const FileUpload = () => {
 
     const formData = new FormData();
     formData.append('file', file as File);
+
+    function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
+      const decoder = new TextDecoder('utf-8'); // 인코딩 형식 설정
+      return decoder.decode(arrayBuffer); // ArrayBuffer를 문자열로 변환
+    }
 
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/upload/`, formData, {
@@ -48,11 +60,15 @@ const FileUpload = () => {
 
         window.URL.revokeObjectURL(url); // Blob URL 해제
         console.log('Blob size:', blob.size);
+        setIsLoading(false);
         openToast({ severity: 'success', message: '파일 업로드 성공' });
       })
       .catch((error) => {
-        console.error('파일 다운로드 실패:', error);
-        openToast({ severity: 'error', message: '파일 다운로드 실패' });
+        setIsLoading(false);
+
+        const errorString = arrayBufferToString(error.response.data);
+        const errorMessage = extractErrorMessageFromString(errorString);
+        openToast({ severity: 'error', message: errorMessage });
       });
   };
 
@@ -65,6 +81,7 @@ const FileUpload = () => {
   };
 
   if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -72,9 +89,15 @@ const FileUpload = () => {
       <Stack
         component={'form'}
         onSubmit={handleSubmit}
-        spacing={2}
+        spacing={3}
         alignItems={'center'}
       >
+        <Stack alignItems={'center'}>
+          <Typography variant='h4'>파일 업로드</Typography>
+          <Typography variant='subtitle1'>
+            텍스트 파일(.txt)을 업로드하여 사이버불링 여부를 진단받으세요.
+          </Typography>
+        </Stack>
         <Button
           component={'label'}
           role={undefined}
