@@ -43,7 +43,7 @@ const Result = () => {
         <Button
           variant='contained'
           onClick={handleDownload}
-          disabled={!!pdfData}
+          disabled={!pdfData}
         >
           PDF 다운로드
         </Button>
